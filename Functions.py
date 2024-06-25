@@ -131,6 +131,9 @@ def plot_MRI(line_segments, RADIUS, filep):
     ax.add_artist(circle1)
     ax.add_collection(lines)
     dir = 'MRI_Plots'
+    if not os.path.exists(dir):
+        os.mkdir(dir)
+
     fig.savefig('{}.png'.format(os.path.join(dir, os.path.splitext(filep)[0])),
                 dpi=600)
     plt.show()
@@ -299,6 +302,7 @@ def find_extremal_articulated(line_segments, RADIUS, filep):
             if rotation <= np.pi / 2:
                 valid_intermediate_configurations.append((A, B, C))
 
+
     return valid_intermediate_configurations
 
 
@@ -310,4 +314,5 @@ for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
         targetx, targety = read_numbers_from_txt(file_path)
         line_segments = run(file_path, targetx, targety)
+        find_un_articulated_paths(line_segments, RADIUS, filename)
         art_paths_before_check = find_extremal_articulated(line_segments, RADIUS, filename)
